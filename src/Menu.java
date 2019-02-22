@@ -32,10 +32,18 @@ public class Menu {
 	public void selectChoise() {
 		BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 		try {
+			
 			choise = Integer.parseInt(read.readLine());
+		
 		}
 		catch(IOException e) {
 			e.printStackTrace();
+		}
+		
+		catch(NumberFormatException ne) {
+			System.out.println("The given value is not correct, please insert a numeric value");
+		    showGameMenu();
+		    selectChoise();
 		}
 	}
 	
@@ -48,6 +56,14 @@ public class Menu {
 		catch(IOException e) {
 			e.printStackTrace();
 		}
+		
+		catch(NumberFormatException ne) {
+			System.out.println("The given value is not correct, please insert a numeric value");
+		    showPlayerMenu();
+			selectPlayerChoise();
+		}
+		
+		
 	}
 	
 	public int getChoise() {

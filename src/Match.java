@@ -21,6 +21,16 @@ public class Match{
 		listCustomPlayers = new ArrayList<Player>();
 		listRandomPlayers = new ArrayList<Player>();
 	}
+	
+	public void inputChecker(Player player, ArrayList<Player> list) {
+		
+		while(player == null) {
+			player = selectPlayer(list);
+		}
+		
+	}
+	
+	
 
 	public Field getBattleground() {
 		return this.field;
@@ -46,6 +56,12 @@ public class Match{
 		catch(IOException e) {
 			e.printStackTrace();
 		}
+		
+	   catch(NumberFormatException ne) {
+			System.out.println("The given value is not correct, please insert a numeric value");	
+		    return null;
+		}
+		
 		return list.get(choise);
 	}
 
@@ -102,7 +118,8 @@ public class Match{
 
 		case 1:
 			System.out.println("Setting Custom Player: ");
-			genericPlayer = new Player(); genericPlayer.setIsCustom();
+			genericPlayer = new Player();
+			genericPlayer.setIsCustom();
 			addPlayer(genericPlayer, listCustomPlayers);
 			System.out.println("Custom Player List: ");
 			printPlayers(listCustomPlayers);
@@ -121,10 +138,6 @@ public class Match{
 		break;
 
 		}
-
-
-
-
 	}
 
 
@@ -140,12 +153,14 @@ public class Match{
 				System.out.println("Select Custom Player.");
 				System.out.println();
 				player1 = selectPlayer(listCustomPlayers);
+				inputChecker(player1, listCustomPlayers);
 				System.out.println();
 				System.out.println("Player " + player1.getName() + " selected.");
 				System.out.println();
 				System.out.println("Select Custom Player.");
 				System.out.println();
 				player2 = selectPlayer(listCustomPlayers);
+				inputChecker(player2, listCustomPlayers);
 				System.out.println();
 				System.out.println("Player " + player2.getName() + " selected.");
 				break;
@@ -161,9 +176,11 @@ public class Match{
 				System.out.println("Select Custom Player."); 
 				System.out.println();
 				player1 = selectPlayer(listCustomPlayers);
+				inputChecker(player1, listCustomPlayers);
 				System.out.println("Player " + player1.getName() + " selected.");
 				System.out.println("Select Random Player.");
 				player2 = selectPlayer(listRandomPlayers);
+				inputChecker(player2, listRandomPlayers);
 				System.out.println("Player " + player2.getName() + " selected.");
 				break; 
 				}
@@ -176,11 +193,13 @@ public class Match{
 				System.out.println("Select Random Player.");
 				System.out.println();
 				player1 = selectPlayer(listRandomPlayers);
+				inputChecker(player1, listRandomPlayers);
 				System.out.println("Player " + player1.getName() + " selected.");
 				System.out.println();
 				System.out.println("Select Random Player.");
 				System.out.println();
 				player2 = selectPlayer(listRandomPlayers);
+				inputChecker(player2, listRandomPlayers);
 				System.out.println("Player " + player2.getName() + " selected.");
 				System.out.println();
 				System.out.println("Starting game");
