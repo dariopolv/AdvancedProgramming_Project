@@ -44,7 +44,7 @@ public class Field {
 			}
 		}
 	}
-	
+
 	public int analizeLine(Player player) {
 		int count = 0;
 		for(int i = 0; i < 6; i++) {
@@ -57,14 +57,14 @@ public class Field {
 		}
 		return count;
 	}
-	
-	
+
+
 	public void checkWinner(Player player, String symbol, int line, int input) {
 		int counter = 0;
 		if(bool == false) {
 			for(int i = 0; i < 6; i ++) {
 				if(field[i][player.getInput()].getSimbol() == symbol && 
-				  field[i][player.getInput()] != null) {
+						field[i][player.getInput()] != null) {
 					counter = counter + 1;
 					if(counter == 4) {
 						bool = true;
@@ -91,7 +91,7 @@ public class Field {
 				}
 			}
 		}
-		
+
 		if(bool == false) {
 			counter = 0;
 			int line_pos = line;
@@ -166,8 +166,8 @@ public class Field {
 		}
 	}
 
-	
-/*
+
+	/*
 	public void checkVertical(Player player, String symbol) {
 		if(bool == false) {
 			int counter = 0;
@@ -185,7 +185,7 @@ public class Field {
 			}
 		}
 	}
-	
+
 	public void checkOrizontal(Player player, int position, String symbol) {
 		if(bool == false) {
 			int counter = 0;
@@ -284,7 +284,7 @@ public class Field {
 			}
 		}
 	}
-	*/
+	 */
 	public void printField() {
 
 		for(int i = 5; i >= 0; i--) {

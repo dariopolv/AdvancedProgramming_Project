@@ -1,8 +1,5 @@
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 public class Match{
 
 	private Field field;
@@ -12,6 +9,7 @@ public class Match{
 	private Menu menu;
 	private ArrayList<Player> listCustomPlayers;
 	private ArrayList<Player> listRandomPlayers;
+	private PlayerSetting playerSetting;
 
 	public Match() {
 		field = new Field();
@@ -20,91 +18,11 @@ public class Match{
 		menu = new Menu();
 		listCustomPlayers = new ArrayList<Player>();
 		listRandomPlayers = new ArrayList<Player>();
+		playerSetting = new PlayerSetting();
 	}
-	
-	public void inputChecker(Player player, ArrayList<Player> list) {
-		
-		while(player == null) {
-			player = selectPlayer(list);
-		}
-		
-	}
-	
-	
 
 	public Field getBattleground() {
 		return this.field;
-	}
-
-	public void addPlayer(Player p, ArrayList<Player> list) {
-		p.setName();
-		p.setPawn();
-		list.add(p);
-		System.out.println("Player " + p.getName() + " created.");
-	}
-
-	public Player selectPlayer(ArrayList<Player> list) {
-		int choise = 0;
-		for(int i = 0; i < list.size(); i++) {
-			System.out.print("["+i+"] - "+"Player: "+list.get(i).getName()+"      Pawn: ");
-			System.out.println(list.get(i).getPawn());
-		}
-		BufferedReader readChoise = new BufferedReader(new InputStreamReader(System.in));	
-		try {
-			choise = Integer.parseInt(readChoise.readLine());
-		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
-		
-	   catch(NumberFormatException ne) {
-			System.out.println("The given value is not correct, please insert a numeric value");	
-		    return null;
-		}
-		
-		return list.get(choise);
-	}
-
-	public void printPlayers(ArrayList<Player> list) {
-		for(int i = 0; i < list.size(); i++) {
-			System.out.print("["+i+"] - "+"Player: "+list.get(i).getName()+"      Pawn: ");
-			System.out.println(list.get(i).getPawn());
-		}
-	}
-
-	public boolean checkListSize(ArrayList<Player> list, int playerChoise) {
-		boolean checkSize = false;
-		switch(playerChoise) {
-		case 1: if(list.size() < 2) {
-			System.out.println("You have to create at least 2 Custom Players to play this mod.");
-			break;
-		}
-
-		else {
-			checkSize = true;
-			break;
-		}
-
-		case 2: if(list.size() < 1) {
-			System.out.println("You have to create at least 1 Custom Player and 1 Random Player to play this mod.");
-			break;
-		}
-		else {
-			checkSize = true;
-			break;
-		}
-
-		case 3: 
-			if(list.size() < 2) {
-				System.out.println("You have to create at least 2 Random Players to play this mod.");
-				break;
-			}
-			else {
-				checkSize = true;
-				break;
-			}
-		}
-		return checkSize;
 	}
 
 	public void start() {
@@ -120,88 +38,55 @@ public class Match{
 			System.out.println("Setting Custom Player: ");
 			genericPlayer = new Player();
 			genericPlayer.setIsCustom();
-			addPlayer(genericPlayer, listCustomPlayers);
+			playerSetting.addPlayer(genericPlayer, listCustomPlayers,listCustomPlayers);
 			System.out.println("Custom Player List: ");
-			printPlayers(listCustomPlayers);
+			playerSetting.printPlayers(listCustomPlayers);
 			start();
 			break;
 
 		case 2: System.out.println("Setting Random Player: "); 
 		genericPlayer = new Player();
-		addPlayer(genericPlayer, listRandomPlayers);
+		playerSetting.addPlayer(genericPlayer, listRandomPlayers,listCustomPlayers);
 		System.out.println("Custom Player List: ");
-		printPlayers(listRandomPlayers);
+		playerSetting.printPlayers(listRandomPlayers);
 		start();
 		break;
 
 		case 3: gameMenu();
 		break;
 
+		case 4: System.out.println("Goodbye!");
+		System.exit(0);
+
 		}
 	}
 
-
+	public Player playerSelection(Player player, String playerMode, ArrayList<Player> list) {	
+		System.out.println("Select "+ playerMode + " Player.");
+		System.out.println();
+		System.out.println(playerMode + " Player List:");
+		playerSetting.printNotSelectedPlayers(playerSetting.getChoise(), list);
+		player = playerSetting.selectPlayer(list);
+		player = playerSetting.inputChecker(player, list);
+		//	playerSetting.resetChoise();
+		System.out.println();
+		System.out.println("Player " + player.getName() + " selected.");
+		System.out.println();
+		return player;
+	}
 
 	public void gameMenu() {
 
 		menu.showGameMenu();
 		menu.selectChoise();
-		
-			switch(menu.getChoise()) { 
-			case 1:
-				if(checkListSize(listCustomPlayers, menu.getChoise())) {
-				System.out.println("Select Custom Player.");
-				System.out.println();
-				player1 = selectPlayer(listCustomPlayers);
-				inputChecker(player1, listCustomPlayers);
-				System.out.println();
-				System.out.println("Player " + player1.getName() + " selected.");
-				System.out.println();
-				System.out.println("Select Custom Player.");
-				System.out.println();
-				player2 = selectPlayer(listCustomPlayers);
-				inputChecker(player2, listCustomPlayers);
-				System.out.println();
-				System.out.println("Player " + player2.getName() + " selected.");
-				break;
-				}
-				else {
-					start();
-					break;
-				}
-			case 2:
-				if(
-				checkListSize(listCustomPlayers, menu.getChoise()) &&
-				checkListSize(listRandomPlayers, menu.getChoise())) {
-				System.out.println("Select Custom Player."); 
-				System.out.println();
-				player1 = selectPlayer(listCustomPlayers);
-				inputChecker(player1, listCustomPlayers);
-				System.out.println("Player " + player1.getName() + " selected.");
-				System.out.println("Select Random Player.");
-				player2 = selectPlayer(listRandomPlayers);
-				inputChecker(player2, listRandomPlayers);
-				System.out.println("Player " + player2.getName() + " selected.");
-				break; 
-				}
-				else {
-					start();
-					break;
-				}
-			case 3:
-				if(checkListSize(listRandomPlayers, menu.getChoise())) {	
-				System.out.println("Select Random Player.");
-				System.out.println();
-				player1 = selectPlayer(listRandomPlayers);
-				inputChecker(player1, listRandomPlayers);
-				System.out.println("Player " + player1.getName() + " selected.");
-				System.out.println();
-				System.out.println("Select Random Player.");
-				System.out.println();
-				player2 = selectPlayer(listRandomPlayers);
-				inputChecker(player2, listRandomPlayers);
-				System.out.println("Player " + player2.getName() + " selected.");
-				System.out.println();
+
+		switch(menu.getChoise()) { 
+		case 1:
+
+			if(playerSetting.checkListSize(listCustomPlayers, menu.getChoise())) {
+
+				player1 = playerSelection(player1, "Custom", listCustomPlayers);
+				player2 = playerSelection(player2, "Custom", listCustomPlayers);
 				System.out.println("Starting game");
 				try {
 					TimeUnit.SECONDS.sleep(2);
@@ -210,19 +95,57 @@ public class Match{
 					e.fillInStackTrace();
 				}
 				break;
-				}
-				else {
-					start();
-					break;
-				}
-				
-			case 4: start();
-			break;
-			
-			case 5:
-				  System.out.println("Goodbye!");
-				  System.exit(0);
 			}
+			else {
+				start();
+				break;
+			}
+		case 2:
+			if(
+					playerSetting.checkListSize(listCustomPlayers, menu.getChoise()) &&
+					playerSetting.checkListSize(listRandomPlayers, menu.getChoise())) {
+
+				player1 = playerSelection(player1, "Custom", listCustomPlayers);
+				player2 = playerSelection(player2, "Random", listRandomPlayers);
+				System.out.println("Starting game");
+				try {
+					TimeUnit.SECONDS.sleep(2);
+				}
+				catch(InterruptedException e) {
+					e.fillInStackTrace();
+				}	
+				break; 	
+			}
+			else {
+				start();
+				break;
+			}
+		case 3:
+			if(playerSetting.checkListSize(listRandomPlayers, menu.getChoise())) {	
+
+				playerSelection(player1, "Random",listRandomPlayers);
+				playerSelection(player2, "Random",listRandomPlayers);				
+				System.out.println("Starting game");
+				try {
+					TimeUnit.SECONDS.sleep(2);
+				}
+				catch(InterruptedException e) {
+					e.fillInStackTrace();
+				}
+				break;
+			}
+			else {
+				start();
+				break;
+			}
+
+		case 4: start();
+		break;
+
+		case 5:
+			System.out.println("Goodbye!");
+			System.exit(0);
+		}
 	}
 
 
