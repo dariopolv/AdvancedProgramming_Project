@@ -124,6 +124,8 @@ public class PlayerSetting {
 	}
 
 	public void addPlayer(Player p, ArrayList<Player> list, ArrayList<Player> list2) {
+		//TODO Setting custom player doesn't match Random Player list
+		
 		p.setName();
 		for(int i = 0; i < list.size(); i++) {
 			while(equals(list.get(i).getName(),p.getName())) {

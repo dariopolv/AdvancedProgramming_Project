@@ -47,7 +47,7 @@ public class Match{
 		case 2: System.out.println("Setting Random Player: "); 
 		genericPlayer = new Player();
 		playerSetting.addPlayer(genericPlayer, listRandomPlayers,listCustomPlayers);
-		System.out.println("Custom Player List: ");
+		System.out.println("Random Player List: ");
 		playerSetting.printPlayers(listRandomPlayers);
 		start();
 		break;

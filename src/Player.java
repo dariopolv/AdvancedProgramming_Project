@@ -85,6 +85,11 @@ public class Player {
 				System.out.println("The given value is not correct, please insert a numeric value");
 				setInput();
 			}
+			
+			while(input < 0 || input > 6) {
+				System.out.println("The given value is out of range, please insert a number from 1 to 7.");
+			    setInput();
+			}
 
 		}
 		else {
