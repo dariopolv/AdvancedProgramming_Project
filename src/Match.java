@@ -27,53 +27,56 @@ public class Match{
 		return this.field;
 	}
 
-public void setPlayer(String playerMode) {
-	System.out.println("Setting " + playerMode + " Player: ");
-	genericPlayer = new Player();
-	if(playerMode == "Custom") {
-	genericPlayer.setIsCustom();
+	//Setting player name, pawn and add it in the right list	
+	public void setPlayer(String playerMode) {
+		System.out.println("Setting " + playerMode + " Player: ");
+		genericPlayer = new Player();
+		if(playerMode == "Custom") {
+			genericPlayer.setIsCustom();
+		}
+		playerSetting.addPlayer(genericPlayer, listCustomPlayers,listRandomPlayers);
+		System.out.println(playerMode + " Player List: ");
+		if(playerMode == "Custom")
+			playerSetting.printPlayers(listCustomPlayers);
+		else 
+			playerSetting.printPlayers(listRandomPlayers);
+		start();
 	}
-	playerSetting.addPlayer(genericPlayer, listCustomPlayers,listRandomPlayers);
-	System.out.println(playerMode + " Player List: ");
-	if(playerMode == "Custom")
-	playerSetting.printPlayers(listCustomPlayers);
-	else 
-		playerSetting.printPlayers(listRandomPlayers);
-	start();
-}
-	
+
+	//Initialization of the field and choice from the menu. Each choice will set the player as Custom or as Random
 	public void start() {
 		field.initializeField();
 		menu.showPlayerMenu();
 		menu.selectFromMenu();
 
 		switch(in.getInputInt()) {
-		
+
 		case 1:
 			setPlayer("Custom");
 			break;
-			
+
 		case 2:
 			setPlayer("Random");
 			break;
-			
+
 		case 3: gameMenu();
 		break;
 
 		case 4:
-			    System.out.println("Custom Player List: ");
-			    playerSetting.printPlayers(listCustomPlayers);
-			    System.out.println("Random Player List:");
-			    playerSetting.printPlayers(listRandomPlayers);
-			    start();
-			    break;
-		
+			System.out.println("Custom Player List: ");
+			playerSetting.printPlayers(listCustomPlayers);
+			System.out.println("Random Player List:");
+			playerSetting.printPlayers(listRandomPlayers);
+			start();
+			break;
+
 		case 5: System.out.println("Goodbye!");
 		System.exit(0);
 
 		}
 	}
 
+	//Player selection from the right list
 	public Player playerSelection(Player player, String playerMode, ArrayList<Player> list) {	
 		System.out.println("Select "+ playerMode + " Player.");
 		System.out.println();
@@ -87,13 +90,13 @@ public void setPlayer(String playerMode) {
 		System.out.println();
 		return player;
 	}
-	
 
+	//Prepare the game to start, last checks for playing in one of the mod in the right way
 	public void gameMenu() {
 
 		menu.showGameMenu();
 		menu.selectFromMenu();
- 
+
 		switch(in.getInputInt()) {
 		case 1:
 			if(playerSetting.checkListSize(listCustomPlayers, in.getInputInt())) {
@@ -117,7 +120,7 @@ public void setPlayer(String playerMode) {
 			if(
 					playerSetting.checkListSize(listCustomPlayers, in.getInputInt()) &&
 					playerSetting.checkListSize(listRandomPlayers, in.getInputInt())) {
-				
+
 				player1 = playerSelection(player1, "Custom", listCustomPlayers);
 				player2 = playerSelection(player2, "Random", listRandomPlayers);
 				System.out.println("Starting game");
@@ -189,6 +192,8 @@ public void setPlayer(String playerMode) {
 		}
 	}
 	 */
+
+	//Starts the game
 	public void play(){
 		if(field.getBool() == false) {
 			System.out.println("Player " + player1.getName()+ " moving...\nSelecting position: \n");

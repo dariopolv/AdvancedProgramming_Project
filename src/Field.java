@@ -26,6 +26,7 @@ public class Field {
 		return this.bool;
 	}
 
+	//Initialization of field as a matrix of cells		
 	public void initializeField() {
 		for(int i = 0; i < getOrizontalSize(); i++) {
 			for(int j = 0; j < getVerticalSize(); j++) {
@@ -35,6 +36,7 @@ public class Field {
 
 	}
 
+	//Check if the cell is empty or filled, if empty it adds a pawn in the cell	
 	public void check(String pawn, int input) {
 		for(int i = 0; i < 6 ; i++) {
 			if(field[i][input].getCheck() == false && field[i][input].getSimbol() == null) {
@@ -45,6 +47,7 @@ public class Field {
 		}
 	}
 
+	//	
 	public int analizeLine(Player player) {
 		int count = 0;
 		for(int i = 0; i < 6; i++) {
@@ -58,7 +61,7 @@ public class Field {
 		return count;
 	}
 
-
+	//check all the possible combinations of four identical symbols in a line(orizontal, vertical or oblique
 	public void checkWinner(Player player, String symbol, int line, int input) {
 		int counter = 0;
 		if(bool == false) {
@@ -285,6 +288,8 @@ public class Field {
 		}
 	}
 	 */
+
+	//Print the field 
 	public void printField() {
 
 		for(int i = 5; i >= 0; i--) {

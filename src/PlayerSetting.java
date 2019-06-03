@@ -1,16 +1,14 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class PlayerSetting {
-	
+
 	private Input in;
 
 	public PlayerSetting() {
 		this.in = new Input();
 	}
 
+	//Override of equals method to check if a player name from a list is equal to a name of a player that we are creating	
 	public boolean equals(String nameFromList, String name) {
 		boolean check = false;
 		if(nameFromList.length() == name.length()) {
@@ -29,6 +27,7 @@ public class PlayerSetting {
 		return check;
 	}
 
+	//Ask input to select a player from a list and get the player from that list	
 	public Player selectPlayer(ArrayList<Player> list) {
 
 		try {
@@ -47,13 +46,15 @@ public class PlayerSetting {
 		}
 
 		return list.get(in.getInputInt());
-		
+
 	}
-	
+
+	//Remove a selected player from the list	
 	public void removeSelectedPlayer(ArrayList<Player> list) {
 		list.remove(in.getInputInt());
 	}
 
+	//Check the selection input, if it's not correct it restarts the selection	
 	public Player inputChecker(Player player, ArrayList<Player> list) {
 		while(player == null) {
 			player = selectPlayer(list);
@@ -61,6 +62,10 @@ public class PlayerSetting {
 		return player;
 	}
 
+	//Check the list size. Each mod of games requires players in the list:
+	//Mod Custom vs Custom: requires to create and add at least 2 Custom players in the list
+	//Mod Custom vs Random: requires to create and add at least 1 Custom player and 1 Random Player in the lists
+	//Mod Random vs Random: requires to create and add at least 2 Random players in the list
 	public boolean checkListSize(ArrayList<Player> list, int playerChoise) {
 		boolean checkSize = false;
 		switch(playerChoise) {
@@ -93,6 +98,7 @@ public class PlayerSetting {
 		return checkSize;
 	}
 
+	//Print the list of players	
 	public void printPlayers(ArrayList<Player> list) {
 		if(list.size() == 0) {
 			System.out.println("No Players found");
@@ -103,6 +109,7 @@ public class PlayerSetting {
 		}
 	}
 
+	//Set player name and pawn and check if match with other names or pawns in the lists. If there isn't a match it adds the player in the right list	
 	public void addPlayer(Player p, ArrayList<Player> list, ArrayList<Player> list2) {
 		p.setName();
 		for(int i = 0; i < list.size(); i++ ) {

@@ -1,11 +1,6 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Random;
 
 public class Player {
-
-	//TODO Create a Player interface, then classes HumanPlayer and RandomPlayer	
 
 	private String name;
 	private String pawn;
@@ -18,7 +13,7 @@ public class Player {
 		this.isCustom = false;
 		this.in = new Input();
 	}
-	
+
 	public void setName() {
 		System.out.println("Choose your name");
 		in.insertString();
@@ -40,8 +35,8 @@ public class Player {
 
 	public void setPawn() {	
 		System.out.println("Choose your pawn");
-		    in.insertString();
-			this.pawn = in.getInputString();
+		in.insertString();
+		this.pawn = in.getInputString();
 
 		if(pawn.length() != 1) {
 			System.out.println("The pawn length must be of one character only.");
@@ -73,7 +68,7 @@ public class Player {
 			input = in.getInputInt() - 1;
 			while(input < 0 || input > 6) {
 				System.out.println("The given value is out of range, please insert a number from 1 to 7.");
-			    setInput();
+				setInput();
 			}
 		}
 		else {
@@ -84,10 +79,5 @@ public class Player {
 	public int getInput() {
 		return this.input;
 	}
-
-
-
-
 	//TODO TODO TODO  aggiungere tempo partita con lista migliori giocatori  ©Protected by Copyright -- Author Dario Polverini
-
 }
