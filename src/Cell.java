@@ -3,11 +3,8 @@ public class Cell {
 	private boolean check;
 	private String simbol;
 
-
 	public Cell() {
-
 		this.check = false;
-
 	}
 
 	public boolean getCheck() {

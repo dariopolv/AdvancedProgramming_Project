@@ -4,15 +4,27 @@ import java.io.IOException;
 
 public class Menu {
 
-	private int choise;
-	private int choisePlayerMenu;
 	private boolean menuChecker;
+	private Input in;
+	private boolean isPlayerMenu;
 
 	public Menu() {
 		this.menuChecker = false;
+		this.in = new Input();
+	}
+
+	public void showPlayerMenu() {
+		this.isPlayerMenu = true;
+		System.out.println("Press one of the following numbers to enter the option: ");
+		System.out.println("[1] - Create new Custom Player.");
+		System.out.println("[2] - Create new Random Player.");
+		System.out.println("[3] - Play.");
+		System.out.println("[4] - Show Player Lists.");
+		System.out.println("[5] - Exit.");
 	}
 
 	public void showGameMenu() {
+		this.isPlayerMenu = false;
 		System.out.println("Press one of the following numbers to enter the option: ");
 		System.out.println("[1] - Start Game: Custom vs Custom");
 		System.out.println("[2] - Start Game: Custom vs Random");
@@ -21,67 +33,37 @@ public class Menu {
 		System.out.println("[5] - Exit.");
 	}
 
-	public void showPlayerMenu() {
-		System.out.println("Press one of the following numbers to enter the option: ");
-		System.out.println("[1] - Create new Custom Player.");
-		System.out.println("[2] - Create new Random Player.");
-		System.out.println("[3] - Play.");
-		System.out.println("[4] - Exit.");
-	}
-
-	public void selectChoise() {
-		BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+	public void selectFromMenu() {
 		try {
-
-			choise = Integer.parseInt(read.readLine());
-
+			in.insertInt();
 		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
-
 		catch(NumberFormatException ne) {
 			System.out.println("The given value is not correct, please insert a numeric value");
-			showGameMenu();
-			selectChoise();
-		}
-		if(choise < 1 || choise > 4) {
-			System.out.println("The given value is not correct, please select a number from 1 to 4.");
-			showGameMenu();
-			selectChoise();
-		}	
-	}
-
-	public void selectPlayerChoise() {
-		BufferedReader readin = new BufferedReader(new InputStreamReader(System.in));
-		try {
-			choisePlayerMenu = Integer.parseInt(readin.readLine());
+			if(isPlayerMenu) {
+				showPlayerMenu();
+				selectFromMenu();
+			}
+			else {
+				showGameMenu();
+				selectFromMenu();
+			}
 		}
 
-		catch(IOException e) {
-			e.printStackTrace();
-		}
-
-		catch(NumberFormatException ne) {
-			System.out.println("The given value is not correct, please insert a numeric value");
-			showPlayerMenu();
-			selectPlayerChoise();
-		}
-
-		if(choisePlayerMenu < 1 || choisePlayerMenu > 4) {
-			System.out.println("The given value is not correct, please select a number from 1 to 4.");
-
-			showPlayerMenu();
-			selectPlayerChoise();
+		if(in.getInputInt() < 1 || in.getInputInt() > 5) {
+			System.out.println("The given value is not correct, please select a number from 1 to 5.");
+			if(isPlayerMenu) {
+				showPlayerMenu();
+				selectFromMenu();
+			}
+			else {
+				showGameMenu();
+				selectFromMenu();	
+			}
 		}
 	}
 
-	public int getChoise() {
-		return this.choise;
-	}
-
-	public int getPlayerChoise() {
-		return this.choisePlayerMenu;
+	public Input getInput() {
+		return this.in;
 	}
 
 	public void setMenuChecker() {

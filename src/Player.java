@@ -11,23 +11,18 @@ public class Player {
 	private String pawn;
 	private int input;
 	private boolean isCustom;
+	private Input in;
 
 	public Player() {
 
 		this.isCustom = false;
+		this.in = new Input();
 	}
-
+	
 	public void setName() {
 		System.out.println("Choose your name");
-		BufferedReader setname = new BufferedReader(new InputStreamReader(System.in));
-		try {
-
-			this.name = setname.readLine();	
-
-		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
+		in.insertString();
+		this.name = in.getInputString();
 
 		if(name.length() == 0) {
 			System.out.println("The name field can't be void");
@@ -45,13 +40,8 @@ public class Player {
 
 	public void setPawn() {	
 		System.out.println("Choose your pawn");
-		BufferedReader read = new BufferedReader(new InputStreamReader(System.in)); 
-		try {
-			this.pawn = read.readLine();
-		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
+		    in.insertString();
+			this.pawn = in.getInputString();
 
 		if(pawn.length() != 1) {
 			System.out.println("The pawn length must be of one character only.");
@@ -73,31 +63,24 @@ public class Player {
 
 	public void setInput() {
 		if(isCustom) {
-			BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 			try {
-				input = Integer.parseInt(read.readLine()) - 1;
+				in.insertInt();
 			}
-			catch(IOException e) {
-				e.printStackTrace();
-			}
-
 			catch(NumberFormatException ne) {
 				System.out.println("The given value is not correct, please insert a numeric value");
 				setInput();
 			}
-			
+			input = in.getInputInt() - 1;
 			while(input < 0 || input > 6) {
 				System.out.println("The given value is out of range, please insert a number from 1 to 7.");
 			    setInput();
 			}
-
 		}
 		else {
 			Random in = new Random();
 			input = in.nextInt(7);
 		}
 	}
-
 	public int getInput() {
 		return this.input;
 	}

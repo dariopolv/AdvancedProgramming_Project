@@ -10,6 +10,7 @@ public class Match{
 	private ArrayList<Player> listCustomPlayers;
 	private ArrayList<Player> listRandomPlayers;
 	private PlayerSetting playerSetting;
+	private Input in;
 
 	public Match() {
 		field = new Field();
@@ -19,43 +20,55 @@ public class Match{
 		listCustomPlayers = new ArrayList<Player>();
 		listRandomPlayers = new ArrayList<Player>();
 		playerSetting = new PlayerSetting();
+		in = menu.getInput();
 	}
 
 	public Field getBattleground() {
 		return this.field;
 	}
 
-	public void start() {
-
-		field.initializeField();
-
-		menu.showPlayerMenu();
-		menu.selectPlayerChoise();
-
-		switch(menu.getPlayerChoise()) {
-
-		case 1:
-			System.out.println("Setting Custom Player: ");
-			genericPlayer = new Player();
-			genericPlayer.setIsCustom();
-			playerSetting.addPlayer(genericPlayer, listCustomPlayers,listCustomPlayers);
-			System.out.println("Custom Player List: ");
-			playerSetting.printPlayers(listCustomPlayers);
-			start();
-			break;
-
-		case 2: System.out.println("Setting Random Player: "); 
-		genericPlayer = new Player();
-		playerSetting.addPlayer(genericPlayer, listRandomPlayers,listCustomPlayers);
-		System.out.println("Random Player List: ");
+public void setPlayer(String playerMode) {
+	System.out.println("Setting " + playerMode + " Player: ");
+	genericPlayer = new Player();
+	if(playerMode == "Custom") {
+	genericPlayer.setIsCustom();
+	}
+	playerSetting.addPlayer(genericPlayer, listCustomPlayers,listRandomPlayers);
+	System.out.println(playerMode + " Player List: ");
+	if(playerMode == "Custom")
+	playerSetting.printPlayers(listCustomPlayers);
+	else 
 		playerSetting.printPlayers(listRandomPlayers);
-		start();
-		break;
+	start();
+}
+	
+	public void start() {
+		field.initializeField();
+		menu.showPlayerMenu();
+		menu.selectFromMenu();
 
+		switch(in.getInputInt()) {
+		
+		case 1:
+			setPlayer("Custom");
+			break;
+			
+		case 2:
+			setPlayer("Random");
+			break;
+			
 		case 3: gameMenu();
 		break;
 
-		case 4: System.out.println("Goodbye!");
+		case 4:
+			    System.out.println("Custom Player List: ");
+			    playerSetting.printPlayers(listCustomPlayers);
+			    System.out.println("Random Player List:");
+			    playerSetting.printPlayers(listRandomPlayers);
+			    start();
+			    break;
+		
+		case 5: System.out.println("Goodbye!");
 		System.exit(0);
 
 		}
@@ -65,25 +78,25 @@ public class Match{
 		System.out.println("Select "+ playerMode + " Player.");
 		System.out.println();
 		System.out.println(playerMode + " Player List:");
-		playerSetting.printNotSelectedPlayers(playerSetting.getChoise(), list);
+		playerSetting.printPlayers(list);
 		player = playerSetting.selectPlayer(list);
 		player = playerSetting.inputChecker(player, list);
-		//	playerSetting.resetChoise();
+		playerSetting.removeSelectedPlayer(list);
 		System.out.println();
 		System.out.println("Player " + player.getName() + " selected.");
 		System.out.println();
 		return player;
 	}
+	
 
 	public void gameMenu() {
 
 		menu.showGameMenu();
-		menu.selectChoise();
-
-		switch(menu.getChoise()) { 
+		menu.selectFromMenu();
+ 
+		switch(in.getInputInt()) {
 		case 1:
-
-			if(playerSetting.checkListSize(listCustomPlayers, menu.getChoise())) {
+			if(playerSetting.checkListSize(listCustomPlayers, in.getInputInt())) {
 
 				player1 = playerSelection(player1, "Custom", listCustomPlayers);
 				player2 = playerSelection(player2, "Custom", listCustomPlayers);
@@ -102,9 +115,9 @@ public class Match{
 			}
 		case 2:
 			if(
-					playerSetting.checkListSize(listCustomPlayers, menu.getChoise()) &&
-					playerSetting.checkListSize(listRandomPlayers, menu.getChoise())) {
-
+					playerSetting.checkListSize(listCustomPlayers, in.getInputInt()) &&
+					playerSetting.checkListSize(listRandomPlayers, in.getInputInt())) {
+				
 				player1 = playerSelection(player1, "Custom", listCustomPlayers);
 				player2 = playerSelection(player2, "Random", listRandomPlayers);
 				System.out.println("Starting game");
@@ -121,7 +134,7 @@ public class Match{
 				break;
 			}
 		case 3:
-			if(playerSetting.checkListSize(listRandomPlayers, menu.getChoise())) {	
+			if(playerSetting.checkListSize(listRandomPlayers, in.getInputInt())) {	
 
 				playerSelection(player1, "Random",listRandomPlayers);
 				playerSelection(player2, "Random",listRandomPlayers);				
