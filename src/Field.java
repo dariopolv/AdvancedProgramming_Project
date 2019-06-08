@@ -95,6 +95,136 @@ public class Field {
 			}
 		}
 
+		//++-- TODO: Code reduc, delete print
+		if(bool == false) {
+			counter = 0;
+			int value = input - line;
+			if(input >= line) {
+				for(int i = 0; i <= 5; i++) {
+					if(field[i][value].getSimbol() == symbol) {
+						counter++;
+						if(value < 6) {
+							value++;
+						}
+						else {
+							i = 5;
+						}
+						System.out.println(counter);
+						if(counter == 4) {
+							bool = true;
+							System.out.println(player.getName() + " Won");
+						}
+					}
+					else {
+						counter = 0;
+						if(value < 6)
+							value++;
+					}
+				}
+			}
+			else {
+				value = line - input;
+				for(int j = 0; j <= 5; j++) {
+					if(field[value][j].getSimbol() == symbol) {
+						counter++;
+						if(value < 5) {
+							value++;
+						}
+						else {
+							j = 5;
+						}
+						System.out.println(counter);
+						if(counter == 4) {
+							bool = true;
+							System.out.println(player.getName() + " Won");
+						}
+					}
+					else {
+						counter = 0;
+						if(value < 5) {
+							value++;
+						}
+
+					}
+				}
+			}
+		}
+
+		if(bool == false) {
+			System.out.println("input: " + input);
+			counter = 0;
+			int val = input + line;
+			int limit = input+line;
+			if(limit >= 6) {
+				limit = 5;
+			}
+			System.out.println("val at start: "+val);
+			if(val < 6) {
+				for(int i = 0; i <= limit; i++) {
+					if(field[i][val].getSimbol() == symbol) {
+						System.out.println("i: " + i);
+						System.out.println("val: " + val);
+						counter++;
+						val--;
+						System.out.println("counter: " + counter);
+						if(counter == 4) {
+							bool = true;
+							System.out.println(player.getName() + " Won");
+						}
+					}
+					else {
+						counter = 0;
+						val--;
+					}
+				}
+			}
+			else {
+				int down_limit = 6;
+				int	start_line = val - down_limit;
+
+				for(int i = start_line; i <= limit; i++ ) {
+					if(field[i][down_limit].getSimbol() == symbol){
+						counter++;
+						down_limit--;
+						if(counter == 4) {
+							bool = true;
+							System.out.println(player.getName() + " Won");
+						}
+					}
+					else {
+						counter = 0;
+						down_limit--;
+					}
+				}
+
+			}
+
+		}
+
+	}
+	public void printField() {
+
+		for(int i = 5; i >= 0; i--) {
+
+			System.out.println("*---*---*---*---*---*---*---*");
+			for(int j = 0; j < 7; j++) {
+				if(field[i][j].getCheck()) {
+					System.out.print("| "+field[i][j].getSimbol()+" ");
+				}
+				else {
+					System.out.print("|   ");
+				}
+			}
+
+
+			System.out.println("|");
+		}
+		System.out.println("*---*---*---*---*---*---*---*");
+		System.out.println("  1   2   3   4   5   6   7");
+	}
+}
+/*	
+	// --
 		if(bool == false) {
 			counter = 0;
 			int line_pos = line;
@@ -103,6 +233,9 @@ public class Field {
 					counter++;
 					if(line_pos != 0) {
 						line_pos--;
+					}
+					else {
+						i = 0;
 					}
 					if(counter == 4) {
 						bool = true;
@@ -114,6 +247,8 @@ public class Field {
 					counter = 0;
 				}
 			}
+
+			//++
 			counter = 0;
 			line_pos = line;
 			for(int j = input; j < vertical_size; j++) {
@@ -131,6 +266,8 @@ public class Field {
 					counter = 0;
 				}
 			}
+
+			//-+
 			counter = 0;
 			line_pos = line;
 			for(int n = input; n < vertical_size; n++) {
@@ -139,6 +276,10 @@ public class Field {
 					if(line_pos != 0) {
 						line_pos--;
 					}
+					else {
+						n = vertical_size;
+					}
+
 					if(counter == 4) {
 						bool = true;
 						System.out.println(player.getName() + " Won");
@@ -148,6 +289,8 @@ public class Field {
 					counter = 0;
 				}
 			}
+
+			//+-
 			counter = 0;
 			line_pos = line; 
 			for(int m = input; m >= 0; m--) {
@@ -167,10 +310,12 @@ public class Field {
 				}	
 			}
 		}
-	}
+ */	
 
 
-	/*
+
+
+/*
 	public void checkVertical(Player player, String symbol) {
 		if(bool == false) {
 			int counter = 0;
@@ -287,30 +432,11 @@ public class Field {
 			}
 		}
 	}
-	 */
+ */
 
-	//Print the field 
-	public void printField() {
-
-		for(int i = 5; i >= 0; i--) {
-
-			System.out.println("*---*---*---*---*---*---*---*");
-			for(int j = 0; j < 7; j++) {
-				if(field[i][j].getCheck()) {
-					System.out.print("| "+field[i][j].getSimbol()+" ");
-				}
-				else {
-					System.out.print("|   ");
-				}
-			}
+//Print the field 
 
 
-			System.out.println("|");
-		}
-		System.out.println("*---*---*---*---*---*---*---*");
-		System.out.println("  1   2   3   4   5   6   7");
-	}
-}
 
 
 

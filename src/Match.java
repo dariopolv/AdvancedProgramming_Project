@@ -36,10 +36,14 @@ public class Match{
 		}
 		playerSetting.addPlayer(genericPlayer, listCustomPlayers,listRandomPlayers);
 		System.out.println(playerMode + " Player List: ");
-		if(playerMode == "Custom")
+		if(playerMode == "Custom") {
 			playerSetting.printPlayers(listCustomPlayers);
-		else 
+			System.out.println();
+		}
+		else {
 			playerSetting.printPlayers(listRandomPlayers);
+			System.out.println();
+		}
 		start();
 	}
 
@@ -139,8 +143,8 @@ public class Match{
 		case 3:
 			if(playerSetting.checkListSize(listRandomPlayers, in.getInputInt())) {	
 
-				playerSelection(player1, "Random",listRandomPlayers);
-				playerSelection(player2, "Random",listRandomPlayers);				
+			 player1 = playerSelection(player1, "Random",listRandomPlayers);
+			 player2 = playerSelection(player2, "Random",listRandomPlayers);				
 				System.out.println("Starting game");
 				try {
 					TimeUnit.SECONDS.sleep(2);
@@ -192,9 +196,15 @@ public class Match{
 		}
 	}
 	 */
+    //TODO: Cotrol that checks if you are out of bound when
+	// you insert the input and the column is full.
+	//TODO: Oblique control doesn't work
 
 	//Starts the game
 	public void play(){
+
+		field.printField();
+
 		if(field.getBool() == false) {
 			System.out.println("Player " + player1.getName()+ " moving...\nSelecting position: \n");
 			player1.setInput();
@@ -209,7 +219,6 @@ public class Match{
 			}
 			field.printField();
 			field.checkWinner(player1, player1.getPawn(), field.analizeLine(player1), player1.getInput());
-
 			if(field.getBool() == false) {
 				System.out.println("Player " + player2.getName()+ " moving...\nSelecting position: \n");
 				player2.setInput();
@@ -224,6 +233,7 @@ public class Match{
 				}
 				field.printField();
 				field.checkWinner(player2, player2.getPawn(), field.analizeLine(player2), player2.getInput());
+				
 			}
 		}
 	}

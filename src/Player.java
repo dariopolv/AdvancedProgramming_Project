@@ -62,12 +62,12 @@ public class Player {
 				in.insertInt();
 			}
 			catch(NumberFormatException ne) {
-				System.out.println("The given value is not correct, please insert a numeric value");
+				System.out.println("The given value is not correct, please insert a numeric value.\nSelecting position:");
 				setInput();
 			}
 			input = in.getInputInt() - 1;
 			while(input < 0 || input > 6) {
-				System.out.println("The given value is out of range, please insert a number from 1 to 7.");
+				System.out.println("The given value is out of range, please insert a number from 1 to 7.\nSelecting position:");
 				setInput();
 			}
 		}

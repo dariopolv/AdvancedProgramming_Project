@@ -120,8 +120,8 @@ public class PlayerSetting {
 				i = 0;
 				p.setName();
 			}
-
 		}
+		
 		for(int i = 0; i < list2.size(); i++) {  		
 			while(equals(list2.get(i).getName(), p.getName())) {
 				i = 0;
@@ -159,5 +159,6 @@ public class PlayerSetting {
 			list2.add(p);
 		}
 		System.out.println("Player " + p.getName() + " created.");
+		System.out.println();
 	}	
 }
