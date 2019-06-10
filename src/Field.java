@@ -28,6 +28,7 @@ public class Field {
 
 	//Initialization of field as a matrix of cells		
 	public void initializeField() {
+		this.bool = false;
 		for(int i = 0; i < getOrizontalSize(); i++) {
 			for(int j = 0; j < getVerticalSize(); j++) {
 				field[i][j] = new Cell();
@@ -47,7 +48,7 @@ public class Field {
 		}
 	}
 
-	//	
+	//When the player select the input returns the line to take the right position	
 	public int analizeLine(Player player) {
 		int count = 0;
 		for(int i = 0; i < 6; i++) {
@@ -64,6 +65,8 @@ public class Field {
 	//check all the possible combinations of four identical symbols in a line(orizontal, vertical or oblique
 	public void checkWinner(Player player, String symbol, int line, int input) {
 		int counter = 0;
+
+		//Vertical control 
 		if(bool == false) {
 			for(int i = 0; i < 6; i ++) {
 				if(field[i][player.getInput()].getSimbol() == symbol && 
@@ -79,6 +82,8 @@ public class Field {
 				}
 			}
 		}
+
+		//Orizontal control
 		if(bool == false) {
 			counter = 0;
 			for(int i = 0; i < 7; i++) {
@@ -95,7 +100,7 @@ public class Field {
 			}
 		}
 
-		//++-- TODO: Code reduc, delete print
+		//Oblique control
 		if(bool == false) {
 			counter = 0;
 			int value = input - line;
@@ -109,7 +114,6 @@ public class Field {
 						else {
 							i = 5;
 						}
-						System.out.println(counter);
 						if(counter == 4) {
 							bool = true;
 							System.out.println(player.getName() + " Won");
@@ -133,7 +137,6 @@ public class Field {
 						else {
 							j = 5;
 						}
-						System.out.println(counter);
 						if(counter == 4) {
 							bool = true;
 							System.out.println(player.getName() + " Won");
@@ -151,22 +154,17 @@ public class Field {
 		}
 
 		if(bool == false) {
-			System.out.println("input: " + input);
 			counter = 0;
 			int val = input + line;
 			int limit = input+line;
 			if(limit >= 6) {
 				limit = 5;
 			}
-			System.out.println("val at start: "+val);
 			if(val < 6) {
 				for(int i = 0; i <= limit; i++) {
 					if(field[i][val].getSimbol() == symbol) {
-						System.out.println("i: " + i);
-						System.out.println("val: " + val);
 						counter++;
 						val--;
-						System.out.println("counter: " + counter);
 						if(counter == 4) {
 							bool = true;
 							System.out.println(player.getName() + " Won");
@@ -202,6 +200,8 @@ public class Field {
 		}
 
 	}
+
+	//Print the field 
 	public void printField() {
 
 		for(int i = 5; i >= 0; i--) {
@@ -223,220 +223,3 @@ public class Field {
 		System.out.println("  1   2   3   4   5   6   7");
 	}
 }
-/*	
-	// --
-		if(bool == false) {
-			counter = 0;
-			int line_pos = line;
-			for(int i = input; i >= 0; i--) {
-				if(field[line_pos][i].getSimbol() == symbol) {
-					counter++;
-					if(line_pos != 0) {
-						line_pos--;
-					}
-					else {
-						i = 0;
-					}
-					if(counter == 4) {
-						bool = true;
-						System.out.println(player.getName() + " Won");
-					}
-				}
-
-				else {
-					counter = 0;
-				}
-			}
-
-			//++
-			counter = 0;
-			line_pos = line;
-			for(int j = input; j < vertical_size; j++) {
-				if(field[line_pos][j].getSimbol() == symbol) {
-					counter++;
-					if(line_pos != 5) {
-						line_pos++;
-					}
-					if(counter == 4) {
-						bool = true;
-						System.out.println(player.getName() + " won");
-					}
-				}
-				else {
-					counter = 0;
-				}
-			}
-
-			//-+
-			counter = 0;
-			line_pos = line;
-			for(int n = input; n < vertical_size; n++) {
-				if(field[line_pos][n].getSimbol() == symbol) {
-					counter++;
-					if(line_pos != 0) {
-						line_pos--;
-					}
-					else {
-						n = vertical_size;
-					}
-
-					if(counter == 4) {
-						bool = true;
-						System.out.println(player.getName() + " Won");
-					}
-				}
-				else {
-					counter = 0;
-				}
-			}
-
-			//+-
-			counter = 0;
-			line_pos = line; 
-			for(int m = input; m >= 0; m--) {
-				if(field[line_pos][m].getSimbol() == symbol) {
-					counter++;
-					if(line_pos != 5) {
-						line_pos++;
-					}
-					if(counter == 4) {
-						bool = true;
-						System.out.println(player.getName() + " Won");
-					}
-
-				}
-				else {
-					counter = 0;
-				}	
-			}
-		}
- */	
-
-
-
-
-/*
-	public void checkVertical(Player player, String symbol) {
-		if(bool == false) {
-			int counter = 0;
-			for(int i = 0; i < 6; i ++) {
-				if(field[i][player.getInput()].getSimbol() == symbol && field[i][player.getInput()] != null) {
-					counter = counter + 1;
-					if(counter == 4) {
-						bool = true;
-						System.out.println(player.getName()+ " won!");
-					}	
-				}
-				else {
-					counter = 0;
-				}
-			}
-		}
-	}
-
-	public void checkOrizontal(Player player, int position, String symbol) {
-		if(bool == false) {
-			int counter = 0;
-			for(int i = 0; i < 7; i++) {
-				if(field[position][i].getSimbol() == symbol) {
-					counter++;
-					if(counter == 4)  {
-						bool = true;
-						System.out.println(player.getName()+ " Won");
-					}
-				}
-				else {
-					counter = 0;
-				}
-			}
-		}
-	}
-
-	public void checkDiagonal(int line, int input, Player player, String symbol) {
-
-		if(bool == false) {
-			int counter = 0;
-			int line_pos = line;
-			for(int i = input; i >= 0; i--) {
-				if(field[line_pos][i].getSimbol() == symbol) {
-					counter++;
-					if(line_pos != 0) {
-						line_pos--;
-					}
-					if(counter == 4) {
-						bool = true;
-						System.out.println(player.getName() + " Won");
-					}
-				}
-
-				else {
-					counter = 0;
-				}
-			}
-			line_pos = line;
-			int cont = 0;
-			for(int j = input; j < vertical_size; j++) {
-				if(field[line_pos][j].getSimbol() == symbol) {
-					cont++;
-					if(line_pos != 5) {
-						line_pos++;
-					}
-					if(cont == 4) {
-						bool = true;
-						System.out.println(player.getName() + " won");
-					}
-				}
-				else {
-					cont = 0;
-				}
-			}
-
-
-
-			int count = 0;
-			line_pos = line;
-			for(int n = input; n < vertical_size; n++) {
-				if(field[line_pos][n].getSimbol() == symbol) {
-					count++;
-					if(line_pos != 0) {
-						line_pos--;
-					}
-					if(count == 4) {
-						bool = true;
-						System.out.println(player.getName() + " Won");
-					}
-				}
-				else {
-					count = 0;
-				}
-
-			}
-
-			int contatore = 0;
-			line_pos = line; 
-			for(int m = input; m >= 0; m--) {
-				if(field[line_pos][m].getSimbol() == symbol) {
-					contatore++;
-					if(line_pos != 5) {
-						line_pos++;
-					}
-					if(contatore == 4) {
-						bool = true;
-						System.out.println(player.getName() + " Won");
-					}
-
-				}
-				else {
-					contatore = 0;
-				}	
-			}
-		}
-	}
- */
-
-//Print the field 
-
-
-
-
-
