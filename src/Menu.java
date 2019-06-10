@@ -6,10 +6,12 @@ public class Menu {
 	private boolean menuChecker;
 	private Input in;
 	private boolean isPlayerMenu;
+	private boolean isEndMenu;
 
 	public Menu() {
 		this.menuChecker = false;
 		this.in = new Input();
+		this.isEndMenu = false;
 	}
 
 	public void showPlayerMenu() {
@@ -31,6 +33,13 @@ public class Menu {
 		System.out.println("[4] - Back.");
 		System.out.println("[5] - Exit.");
 	}
+	
+	public void showEndMenu() {
+		this.isEndMenu = true;
+		System.out.println("Do you want to go to the Main Menu?\n"
+				+ "[1] Yes\n"
+				+ "[2] No");
+	}
 
 	public void selectFromMenu() {
 		try {
@@ -38,6 +47,7 @@ public class Menu {
 		}
 		catch(NumberFormatException ne) {
 			System.out.println("The given value is not correct, please insert a numeric value");
+		if(!isEndMenu) {
 			if(isPlayerMenu) {
 				showPlayerMenu();
 				selectFromMenu();
@@ -47,7 +57,11 @@ public class Menu {
 				selectFromMenu();
 			}
 		}
-
+		else {
+			showEndMenu();
+		}
+	}
+if(!isEndMenu) {
 		if(in.getInputInt() < 1 || in.getInputInt() > 5) {
 			System.out.println("The given value is not correct, please select a number from 1 to 5.");
 			if(isPlayerMenu) {
@@ -59,6 +73,13 @@ public class Menu {
 				selectFromMenu();	
 			}
 		}
+}
+else {
+	if(in.getInputInt() < 1 || in.getInputInt() > 2) {
+		System.out.println("The given value is not correct, please select a number from 1 to 5.");
+	     showEndMenu();
+	}
+}
 	}
 
 	public Input getInput() {
@@ -67,6 +88,10 @@ public class Menu {
 
 	public void setMenuChecker() {
 		this.menuChecker = true;
+	}
+	
+	public void deselectEndMenu() {
+		this.isEndMenu = false;
 	}
 
 	public boolean getMenuChecker() {
