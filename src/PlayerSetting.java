@@ -44,14 +44,31 @@ public class PlayerSetting {
 			printPlayers(list);
 			return null;
 		}
-
+		if(list.get(in.getInputInt()).isSelectedPlayer()) {
+			System.out.println("You already picked that player, it is not available anymore");
+			printNotSelectedPlayer(list);
+			return null;
+		}
+		list.get(in.getInputInt()).setIsSelected();
 		return list.get(in.getInputInt());
 
 	}
 
-	//Remove a selected player from the list	
-	public void removeSelectedPlayer(ArrayList<Player> list) {
+	//TODO: Sort doesn't work
+	//Removes a selected player from the list	
+	public void sortSelectedPlayer(ArrayList<Player> list, Player p) {
+		list.add(list.size()-1, p);
 		list.remove(in.getInputInt());
+	}
+
+	//Prints all player except the selected players when the game is running 
+	public void printNotSelectedPlayer(ArrayList<Player> list) {
+		for(int i = 0; i < list.size(); i++) {
+			if(!list.get(i).isSelectedPlayer()) {
+				System.out.print("["+i+"] - "+"Player: "+list.get(i).getName()+"      Pawn: ");
+				System.out.println(list.get(i).getPawn());
+			}
+		}
 	}
 
 	//Check the selection input, if it's not correct it restarts the selection	
@@ -109,7 +126,8 @@ public class PlayerSetting {
 		}
 	}
 
-	//Set player name and pawn and check if match with other names or pawns in the lists. If there isn't a match it adds the player in the right list	
+	//Set player name and pawn and check if match with other names or pawns in the lists. 
+	//If there isn't a match it adds the player in the right list	
 	public void addPlayer(Player p, ArrayList<Player> list, ArrayList<Player> list2) {
 		p.setName();
 		for(int i = 0; i < list.size(); i++ ) {
@@ -121,7 +139,7 @@ public class PlayerSetting {
 				p.setName();
 			}
 		}
-		
+
 		for(int i = 0; i < list2.size(); i++) {  		
 			while(equals(list2.get(i).getName(), p.getName())) {
 				i = 0;
