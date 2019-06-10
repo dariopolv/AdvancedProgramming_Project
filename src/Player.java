@@ -6,10 +6,11 @@ public class Player {
 	private String pawn;
 	private int input;
 	private boolean isCustom;
+	private boolean isSelected;
 	private Input in;
 
 	public Player() {
-
+		this.isSelected = false;
 		this.isCustom = false;
 		this.in = new Input();
 	}
@@ -52,9 +53,22 @@ public class Player {
 		this.isCustom = true;
 	}
 
+	public void setIsSelected() {
+		this.isSelected = true;
+	}
+
 	public boolean isCustomPlayer() {
 		return this.isCustom;
 	}
+
+	public boolean isSelectedPlayer() {
+		return this.isSelected;
+	}
+
+	public void deselectPlayer() {
+		this.isSelected = false;
+	}
+
 
 	public void setInput() {
 		if(isCustom) {
