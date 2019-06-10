@@ -23,6 +23,15 @@ public class Match{
 		in = menu.getInput();
 	}
 
+	//It runs the game from the beginning
+	//This function is called only if the game is restarted
+	public void runGame() {
+		start();
+		while(getBattleground().getBool() == false) {	 
+			play();
+		}
+	}
+
 	public Field getBattleground() {
 		return this.field;
 	}
@@ -80,15 +89,16 @@ public class Match{
 		}
 	}
 
+	//TODO: Sort doesn't work
 	//Player selection from the right list
-	public Player playerSelection(Player player, String playerMode, ArrayList<Player> list) {	
+	public Player playerSelection(Player player, String playerMode, ArrayList<Player> list) {
 		System.out.println("Select "+ playerMode + " Player.");
 		System.out.println();
 		System.out.println(playerMode + " Player List:");
-		playerSetting.printPlayers(list);
+		playerSetting.printNotSelectedPlayer(list);
 		player = playerSetting.selectPlayer(list);
 		player = playerSetting.inputChecker(player, list);
-		playerSetting.removeSelectedPlayer(list);
+		playerSetting.sortSelectedPlayer(list, player);
 		System.out.println();
 		System.out.println("Player " + player.getName() + " selected.");
 		System.out.println();
@@ -110,6 +120,7 @@ public class Match{
 				System.out.println("Starting game");
 				try {
 					TimeUnit.SECONDS.sleep(2);
+					field.printField();
 				}
 				catch(InterruptedException e) {
 					e.fillInStackTrace();
@@ -130,6 +141,7 @@ public class Match{
 				System.out.println("Starting game");
 				try {
 					TimeUnit.SECONDS.sleep(2);
+					field.printField();
 				}
 				catch(InterruptedException e) {
 					e.fillInStackTrace();
@@ -143,11 +155,12 @@ public class Match{
 		case 3:
 			if(playerSetting.checkListSize(listRandomPlayers, in.getInputInt())) {	
 
-			 player1 = playerSelection(player1, "Random",listRandomPlayers);
-			 player2 = playerSelection(player2, "Random",listRandomPlayers);				
+				player1 = playerSelection(player1, "Random",listRandomPlayers);
+				player2 = playerSelection(player2, "Random",listRandomPlayers);				
 				System.out.println("Starting game");
 				try {
 					TimeUnit.SECONDS.sleep(2);
+					field.printField();
 				}
 				catch(InterruptedException e) {
 					e.fillInStackTrace();
@@ -168,48 +181,20 @@ public class Match{
 		}
 	}
 
-
-	/*	public void move() {
+	//The field variable is set as false until there will be a winner.
+	//The method check if the move is allowed and it perform it.
+	public void move(Player player) {
 		if(field.getBool() == false) {
-			System.out.println("Player " + player1.getName()+ " moving...\nSelect position: \n");
-			player1.setInput();
-			field.check(player1.getPawn(), player1.getInput());
-			field.printField();
-			field.checkWinner(player1, player1.getPawn(), field.analizeLine(player1), player1.getInput());
-
-			field.checkOrizontal(player1, field.analizeLine(player1), player1.getPawn());
-			field.checkDiagonal(field.analizeLine(player1), player1.getInput(), player1, player1.getPawn());
-			field.checkVertical(player1, player1.getPawn());
-
-		}
-		if(field.getBool() == false) {
-			System.out.println("Player " + player2.getName()+ " moving...\nSelect position: \n");
-			player2.setInput();
-			field.check(player2.getPawn(), player2.getInput());
-			field.printField();
-			field.checkWinner(player2, player2.getPawn(), field.analizeLine(player2), player2.getInput());
-			/*
-			field.checkOrizontal(player2, field.analizeLine(player2), player2.getPawn());
-			field.checkDiagonal(field.analizeLine(player2), player2.getInput(), player2, player2.getPawn());
-			field.checkVertical(player2, player2.getPawn());
-
-		}
-	}
-	 */
-    //TODO: Cotrol that checks if you are out of bound when
-	// you insert the input and the column is full.
-	//TODO: Oblique control doesn't work
-
-	//Starts the game
-	public void play(){
-
-		field.printField();
-
-		if(field.getBool() == false) {
-			System.out.println("Player " + player1.getName()+ " moving...\nSelecting position: \n");
-			player1.setInput();
-			field.check(player1.getPawn(), player1.getInput());
-			if(player1.isCustomPlayer() == false) {
+			System.out.println("Player " + player.getName()+ " moving...\nSelecting position: \n");
+			player.setInput();
+			while(field.analizeLine(player) == 5 && 
+				  field.getField()[field.analizeLine(player)][player.getInput()] != null) {
+				System.out.println("The current column is full, choose another.");
+				System.out.println("Player " + player.getName()+ " moving...\nSelecting position: \n");
+				player.setInput();
+			}
+			field.check(player.getPawn(), player.getInput());
+			if(player.isCustomPlayer() == false) {
 				try {
 					TimeUnit.SECONDS.sleep(1);
 				}
@@ -218,25 +203,34 @@ public class Match{
 				}
 			}
 			field.printField();
-			field.checkWinner(player1, player1.getPawn(), field.analizeLine(player1), player1.getInput());
-			if(field.getBool() == false) {
-				System.out.println("Player " + player2.getName()+ " moving...\nSelecting position: \n");
-				player2.setInput();
-				field.check(player2.getPawn(), player2.getInput());
-				if(player2.isCustomPlayer() == false) {
-					try {
-						TimeUnit.SECONDS.sleep(1);
-					}
-					catch(InterruptedException e) {
-						e.fillInStackTrace();
-					}
+			field.checkWinner(player, player.getPawn(), field.analizeLine(player), player.getInput());
+			player.deselectPlayer();
+			endGame();
+		}
+	}
+
+	//Starts the game:
+	public void play(){
+
+		move(player1);
+		move(player2);
+	}
+
+	public void endGame() {
+		if(field.getBool()) {
+			menu.showEndMenu();
+			menu.selectFromMenu();
+			switch(in.getInputInt()) {
+			case 1: 
+				menu.deselectEndMenu();
+				start();
+				while(getBattleground().getBool() == false) {	 
+					play();
 				}
-				field.printField();
-				field.checkWinner(player2, player2.getPawn(), field.analizeLine(player2), player2.getInput());
-				
+				break;
+			case 2: System.out.println("Goodbye!");
+			System.exit(0);
 			}
 		}
 	}
 }
-
-
